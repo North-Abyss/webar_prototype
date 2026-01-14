@@ -12,27 +12,104 @@
     <!-- Custom Style -->
     <link rel="stylesheet" href="./css/style.css">
 
-    <!-- Custom Logic -->
-    <script src="./js/app.js"></script>
+    <style>
+        /* Start AR Overlay */
+        #start-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        #start-button {
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            background: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
 </head>
 
 <body>
+    <!-- Start AR Overlay -->
+    <div id="start-overlay">
+        <button id="start-button">Start AR</button>
+    </div>
+
     <!-- 
       MindAR Scene 
-      - uiScanning: no (Hides the 'searching' bracket animation)
-      - uiLoading: yes (Shows loading screen + visual Start button)
-      - filterMinCF / filterBeta: Tuning for smoothness. 
-        filterMinCF: cutoff frequency (lower = smoother but more lag)
-        filterBeta: speed coefficient (lower = less jitter)
-        Default is usually fine, but 0.0001 for MinCF is very smooth.
     -->
-    <a-scene mindar-image="imageTargetSrc: ./assets/targets.mind; uiScanning: no; uiLoading: yes;" color-space="sRGB"
-        renderer="colorManagement: true, physicallyCorrectLights: false" vr-mode-ui="enabled: false"
-        device-orientation-permission-ui="enabled: false" scene-generator>
-        <a-assets timeout="10000"></a-assets>
+    <a-scene
+        mindar-image="imageTargetSrc: ./assets/targets.mind; uiScanning: no; uiLoading: no; filterMinCF: 0.0001; filterBeta: 0.001;"
+        color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights: false" vr-mode-ui="enabled: false"
+        device-orientation-permission-ui="enabled: false">
+
+        <a-assets>
+            <!-- 
+                Video Asset with Mobile Fixes:
+                - muted, playsinline, webkit-playsinline: allow autoplay and inline playback
+                - crossorigin: required for texture
+                - loop: keep playing
+             -->
+            <video id="ar-video" src="./assets/video.mp4" preload="auto" loop="true" muted playsinline
+                webkit-playsinline crossorigin="anonymous">
+            </video>
+        </a-assets>
 
         <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+        <!-- Target and Video Overlay -->
+        <a-entity mindar-image-target="targetIndex: 0" id="target-entity">
+            <a-video src="#ar-video" width="1" height="0.5625" position="0 0 0"></a-video>
+        </a-entity>
     </a-scene>
+
+    <script>
+        const startOverlay = document.getElementById('start-overlay');
+        const startButton = document.getElementById('start-button');
+        const video = document.getElementById('ar-video');
+        const targetEntity = document.getElementById('target-entity');
+
+        // 1. User Interaction to Unlock Audio/Video
+        startButton.addEventListener('click', () => {
+            // Hide overlay
+            startOverlay.style.display = 'none';
+
+            // Unlock video (play then pause)
+            video.muted = false; // Unmute now that we have interaction (optional, or wait for target)
+            video.play().then(() => {
+                video.pause();
+            }).catch((err) => {
+                console.error("Video play failed", err);
+            });
+        });
+
+        // 2. Logic: Play on Found, Pause on Lost
+        targetEntity.addEventListener('targetFound', () => {
+            console.log("Target Found");
+            if (video.paused) {
+                video.muted = false; // Ensure sound is on
+                video.play();
+            }
+        });
+
+        targetEntity.addEventListener('targetLost', () => {
+            console.log("Target Lost");
+            if (!video.paused) {
+                video.pause();
+            }
+        });
+    </script>
 </body>
 
 </html>
