@@ -56,3 +56,22 @@ const AR_CONTENT = [
     ```
 2.  **Enable Pages**: Go to Repo Settings > Pages > Source: `main`.
 3.  **Test**: Open the provided GitHub Pages URL on your phone.
+
+## 📱 Troubleshooting: Mobile Camera Access
+
+**Problem**: On Android/iOS, the camera doesn't open, or the "Start" button does nothing.
+
+**Reason**: Browsers **BLOCK** camera access on insecure (`http://`) sites unless they are `localhost`. accessing via IP address (e.g., `192.168.1.5:8000`) is insecure.
+
+**Solution 1: USB Port Forwarding (Best for Dev)**
+1.  Connect your Android phone to PC via USB.
+2.  Enable **USB Debugging** on the phone.
+3.  On PC Chrome, go to `chrome://inspect/#devices`.
+4.  Click **Port Forwarding**.
+5.  Add Rule: `8000` -> `localhost:8000`.
+6.  Open `http://localhost:8000` on your phone's Chrome.
+7.  The phone now thinks it's local, so it allows the camera!
+
+**Solution 2: Deploy to GitHub Pages**
+1.  Follow the deployment guide above.
+2.  GitHub Pages provides `https://`, which is secure and always works.
