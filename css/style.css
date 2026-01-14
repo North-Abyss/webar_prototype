@@ -1,0 +1,14 @@
+body {
+    margin: 0;
+    overflow: hidden;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* 
+   We removed the custom Start Overlay and Debug Console 
+   as per user request for a "clean" look.
+   The MindAR default UI (Loading/Start) will handle the UX.
+*/
+
+/* Optional: Scanline effect could be moved here if desired, 
+   but removed for now to keep it minimal and performance focused. */

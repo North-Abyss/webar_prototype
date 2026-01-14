@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>WebAR Experience</title>
+
+    <!-- Dependencies -->
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+
+    <!-- Custom Style -->
+    <link rel="stylesheet" href="./css/style.css">
+
+    <!-- Custom Logic -->
+    <script src="./js/app.js"></script>
+</head>
+
+<body>
+    <!-- 
+      MindAR Scene 
+      - uiScanning: no (Hides the 'searching' bracket animation)
+      - uiLoading: yes (Shows loading screen + visual Start button)
+      - filterMinCF / filterBeta: Tuning for smoothness. 
+        filterMinCF: cutoff frequency (lower = smoother but more lag)
+        filterBeta: speed coefficient (lower = less jitter)
+        Default is usually fine, but 0.0001 for MinCF is very smooth.
+    -->
+    <a-scene mindar-image="imageTargetSrc: ./assets/targets.mind; uiScanning: no; uiLoading: yes;" color-space="sRGB"
+        renderer="colorManagement: true, physicallyCorrectLights: false" vr-mode-ui="enabled: false"
+        device-orientation-permission-ui="enabled: false" scene-generator>
+        <a-assets timeout="10000"></a-assets>
+
+        <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+    </a-scene>
+</body>
+
+</html>
