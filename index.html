@@ -13,102 +13,286 @@
     <link rel="stylesheet" href="./css/style.css">
 
     <style>
-        /* Start AR Overlay */
-        #start-overlay {
+        /* Pokedex Overlay */
+        #pokedex-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.8);
+            pointer-events: none;
+            z-index: 999;
             display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
-        #start-button {
-            padding: 15px 30px;
+        .hidden {
+            display: none !important;
+        }
+
+        /* Pokedex Border Frame */
+        .pokedex-frame {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+            border: 15px solid #222;
+            border-radius: 0 0 20px 20px;
+            z-index: 10;
+            pointer-events: none;
+            /* Ensure clicks pass through */
+        }
+
+        /* Top Bar Accent */
+        .pokedex-frame::before {
+            content: '';
+            position: absolute;
+            top: -15px;
+            /* Cover top border area */
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background: #c0392b;
+            /* Pokedex Red */
+            clip-path: polygon(0 0, 100% 0, 100% 40px, 60% 40px, 50% 60px, 0 60px);
+            z-index: -1;
+        }
+
+        /* Blue Camera Lens Accent */
+        .camera-lens-accent {
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            width: 40px;
+            height: 40px;
+            background: radial-gradient(circle at 30% 30%, #4facfe, #00f2fe);
+            border: 3px solid white;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(0, 242, 254, 0.5);
+            z-index: 20;
+        }
+
+        /* Small Indicator Lights */
+        .indicator-lights {
+            position: absolute;
+            top: 15px;
+            left: 80px;
+            display: flex;
+            gap: 10px;
+            z-index: 20;
+        }
+
+        .light {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .light.red {
+            background: #ff4d4d;
+        }
+
+        .light.yellow {
+            background: #ffcc00;
+        }
+
+        .light.green {
+            background: #33cc33;
+        }
+
+        /* Instruction Text */
+        .instruction-container {
+            position: absolute;
+            bottom: 30px;
+            width: 100%;
+            text-align: center;
+            z-index: 1002;
+            pointer-events: none;
+        }
+
+        .instruction-text {
+            font-family: 'Courier New', monospace;
+            /* Retro tech feel */
             font-size: 1.2rem;
-            background: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            color: #333;
+            color: #4facfe;
+            text-transform: uppercase;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 10px 20px;
+            border-radius: 10px;
+            border: 1px solid #4facfe;
+            display: inline-block;
+            box-shadow: 0 0 15px rgba(79, 172, 254, 0.3);
+            letter-spacing: 1px;
         }
     </style>
 </head>
 
 <body>
-    <!-- Start AR Overlay -->
-    <div id="start-overlay">
-        <button id="start-button">Start AR</button>
+    <!-- UI Layer -->
+    <div id="ui-layer">
+        <!-- Floating Menu Button -->
+        <div id="menu-btn">
+            <svg viewBox="0 0 24 24">
+                <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
+            </svg>
+        </div>
+
+        <!-- Settings Modal -->
+        <div id="settings-modal">
+            <div class="settings-card">
+                <h2>Settings</h2>
+
+                <div class="setting-row">
+                    <span class="setting-label">Fullscreen</span>
+                    <label class="switch">
+                        <input type="checkbox" id="fullscreen-toggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="setting-row">
+                    <span class="setting-label">Mute Audio</span>
+                    <label class="switch">
+                        <input type="checkbox" id="mute-toggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div style="text-align: center; margin-top: 10px;">
+                    <button id="close-settings"
+                        style="background: none; border: 1px solid rgba(255,255,255,0.3); color: white; padding: 8px 16px; border-radius: 20px; cursor: pointer;">Close</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pokedex / Modern Overlay -->
+        <div id="viewfinder-layer">
+            <div class="corner-guide corner-top-left"></div>
+            <div class="corner-guide corner-top-right"></div>
+            <div class="corner-guide corner-bottom-left"></div>
+            <div class="corner-guide corner-bottom-right"></div>
+        </div>
+
+        <div class="instruction-container" id="instruction-container">
+            <div class="instruction-pill">
+                <svg class="instruction-icon" viewBox="0 0 24 24" fill="white">
+                    <path
+                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9v-2h2v2zm0-4H9V7h2v5z" />
+                </svg>
+                <span class="instruction-text">Point camera at image</span>
+            </div>
+        </div>
     </div>
 
-    <!-- 
-      MindAR Scene 
-    -->
-    <a-scene
-        mindar-image="imageTargetSrc: ./assets/targets.mind; uiScanning: no; uiLoading: no; filterMinCF: 0.0001; filterBeta: 0.001;"
-        color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights: false" vr-mode-ui="enabled: false"
+    <!-- MindAR Scene -->
+    <a-scene mindar-image="imageTargetSrc: ./assets/targets.mind; uiScanning: no; uiLoading: no;" color-space="sRGB"
+        renderer="colorManagement: true, physicallyCorrectLights: false" vr-mode-ui="enabled: false"
         device-orientation-permission-ui="enabled: false">
 
         <a-assets>
-            <!-- 
-                Video Asset with Mobile Fixes:
-                - muted, playsinline, webkit-playsinline: allow autoplay and inline playback
-                - crossorigin: required for texture
-                - loop: keep playing
-             -->
-            <video id="ar-video" src="./assets/video.mp4" preload="auto" loop="true" muted playsinline
-                webkit-playsinline crossorigin="anonymous">
+            <!-- Default muted to allow autoplay -->
+            <!-- Video - Audio enabled by default (muted removed) -->
+            <video id="ar-video" src="./assets/video.mp4" preload="auto" loop="true" playsinline webkit-playsinline
+                crossorigin="anonymous">
             </video>
         </a-assets>
 
         <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-        <!-- Target and Video Overlay -->
         <a-entity mindar-image-target="targetIndex: 0" id="target-entity">
             <a-video src="#ar-video" width="1" height="0.5625" position="0 0 0"></a-video>
         </a-entity>
     </a-scene>
 
     <script>
-        const startOverlay = document.getElementById('start-overlay');
-        const startButton = document.getElementById('start-button');
         const video = document.getElementById('ar-video');
         const targetEntity = document.getElementById('target-entity');
+        const instructionContainer = document.getElementById('instruction-container');
+        const menuBtn = document.getElementById('menu-btn');
+        const settingsModal = document.getElementById('settings-modal');
+        const closeSettingsBtn = document.getElementById('close-settings');
+        const fullscreenToggle = document.getElementById('fullscreen-toggle');
+        const muteToggle = document.getElementById('mute-toggle');
 
-        // 1. User Interaction to Unlock Audio/Video
-        startButton.addEventListener('click', () => {
-            // Hide overlay
-            startOverlay.style.display = 'none';
+        // Initial State
+        // Ensure video is not muted
+        video.muted = false;
+        muteToggle.checked = false; // Sync UI
 
-            // Unlock video (play then pause)
-            video.muted = false; // Unmute now that we have interaction (optional, or wait for target)
-            video.play().then(() => {
-                video.pause();
-            }).catch((err) => {
-                console.error("Video play failed", err);
-            });
+        // --- Menu Logic ---
+        function toggleSettings() {
+            settingsModal.classList.toggle('active');
+        }
+
+        menuBtn.addEventListener('click', toggleSettings);
+        closeSettingsBtn.addEventListener('click', toggleSettings);
+
+        // Close on background click
+        settingsModal.addEventListener('click', (e) => {
+            if (e.target === settingsModal) toggleSettings();
         });
 
-        // 2. Logic: Play on Found, Pause on Lost
+        // --- Fullscreen Logic ---
+        fullscreenToggle.addEventListener('change', (e) => {
+            if (e.target.checked) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.log("Fullscreen blocked:", err);
+                    e.target.checked = false; // Revert if failed
+                });
+            } else {
+                if (document.fullscreenElement) {
+                    document.exitFullscreen();
+                }
+            }
+        });
+
+        // Sync toggle if fullscreen changes externally (e.g. ESC key)
+        document.addEventListener('fullscreenchange', () => {
+            fullscreenToggle.checked = !!document.fullscreenElement;
+        });
+
+        // --- Audio Logic ---
+        muteToggle.addEventListener('change', (e) => {
+            video.muted = e.target.checked;
+        });
+
+        // --- AR Events ---
+        // --- AR Events ---
         targetEntity.addEventListener('targetFound', () => {
             console.log("Target Found");
-            if (video.paused) {
-                video.muted = false; // Ensure sound is on
-                video.play();
+            instructionContainer.classList.add('hidden-ui');
+
+            // Force unmute just in case
+            if (!muteToggle.checked) {
+                video.muted = false;
             }
+
+            video.play().catch(e => {
+                console.warn("Autoplay block:", e);
+            });
         });
 
         targetEntity.addEventListener('targetLost', () => {
             console.log("Target Lost");
-            if (!video.paused) {
-                video.pause();
-            }
+            instructionContainer.classList.remove('hidden-ui');
+            video.pause();
         });
+
+        // "Prime" the video on first interaction to help with mobile autoplay policies
+        function unlockAudio() {
+            video.play().then(() => {
+                video.pause();
+            }).catch(() => { });
+            document.removeEventListener('click', unlockAudio);
+            document.removeEventListener('touchstart', unlockAudio);
+        }
+        document.addEventListener('click', unlockAudio);
+        document.addEventListener('touchstart', unlockAudio);
+
     </script>
 </body>
 
