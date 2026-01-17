@@ -2,7 +2,7 @@
 
 A premium, browser-based Augmented Reality experience built with **MindAR** and **A-Frame**. This project features a sleek, "Glassmorphism" UI that provides a high-quality user experience without requiring any app installation.
 
-![WebAR Screenshot](https://via.placeholder.com/800x450?text=WebAR+Preview)
+![WebAR Screenshot](https://github.com/North-Abyss/webar_prototype/blob/main/Gemini_Generated_Image-with-QR.png)
 
 ## ✨ Features
 
