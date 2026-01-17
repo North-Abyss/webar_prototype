@@ -5,7 +5,9 @@
 
 A premium, browser-based Augmented Reality experience. This project brings static images to life by overlaying video content directly onto physical posters using **MindAR** and **A-Frame**. No app download is required—just scan and watch.
 
-[**🔴 LIVE DEMO**](https://north-abyss.github.io/webar_prototype/) | [**👁️ View Target Image**](https://github.com/North-Abyss/webar_prototype/blob/main/demo-image1.png)
+[**🔴 LIVE DEMO**](https://north-abyss.github.io/webar_prototype/)
+
+[**👁️ View Target Image**](https://github.com/North-Abyss/webar_prototype/blob/main/demo-image1.png)
 
 ---
 
