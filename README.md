@@ -7,7 +7,7 @@ A premium, browser-based Augmented Reality experience. This project brings stati
 
 [**🔴 LIVE DEMO**](https://north-abyss.github.io/webar_prototype/)
 
-[View Target Image](https://github.com/North-Abyss/webar_prototype/blob/main/demo-image1.png)
+[View Target Image](/Gemini_Generated_Image-with-QR.png)
 
 ---
 
