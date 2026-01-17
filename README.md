@@ -1,76 +1,108 @@
-# WebAR Experience (Modern Glassmorphism)
 
-A premium, browser-based Augmented Reality experience built with **MindAR** and **A-Frame**. This project features a sleek, "Glassmorphism" UI that provides a high-quality user experience without requiring any app installation.
+# 🌌 WebAR Experience: "Hollow Knight" Prototype
 
-![WebAR Screenshot](https://github.com/North-Abyss/webar_prototype/blob/main/Gemini_Generated_Image-with-QR.png)
+![Status](https://img.shields.io/badge/Status-Live-success) ![Tech](https://img.shields.io/badge/Tech-MindAR%20%7C%20A--Frame-blueviolet) ![License](https://img.shields.io/badge/License-MIT-lightgrey)
+
+A premium, browser-based Augmented Reality experience. This project brings static images to life by overlaying video content directly onto physical posters using **MindAR** and **A-Frame**. No app download is required—just scan and watch.
+
+[**🔴 LIVE DEMO**](https://north-abyss.github.io/webar_prototype/) | [**👁️ View Target Image**](https://github.com/North-Abyss/webar_prototype/blob/main/assets/target_image_example.jpg)
+
+---
 
 ## ✨ Features
+* **Zero-Install AR:** Runs natively in Chrome, Safari, and Firefox.
+* **Glassmorphism UI:** sleek, modern interface with frosted glass effects.
+* **Precision Tracking:** Video locks onto the image corners instantly.
+* **Smart Audio:** Unmutes audio automatically when the target is detected.
+* **Mobile Optimized:** Solves common mobile browser blocks (autoplay/inline playback).
 
-- **Instant AR**: Runs directly in the browser (Chrome, Safari, Firefox). No app download required.
-- **Modern UI**:
-    - **Glassmorphism Theme**: Frosted glass effects on menus and instructions.
-    - **Sleek Viewfinder**: Minimalist corner guides for a distraction-free experience.
-    - **Smart Instructions**: "Point camera at image" prompt that automatically hides when detected.
-- **Rich Media**: Supports high-quality video overlays with audio.
-- **Audio-First**: Designed to unmute and play video audio automatically upon target detection (subject to browser policies).
-- **Responsive**: Adapts gracefully to both mobile and desktop screens.
+---
+
+## 🛠️ How It Works (The Process)
+
+This project uses **Image Tracking** technology. Here is the flow from start to finish:
+
+1.  **The "Target":** We take a normal image (like a poster) and "compile" it into a data file (`.mind`) that the camera can understand.
+2.  **The Recognition:** When your camera sees the physical poster, the browser compares it to the compiled data file.
+3.  **The Overlay:** Once a match is found (Homography), the code calculates the exact angle and distance of the poster.
+4.  **The Render:** It projects an MP4 video file onto that exact space, sticking to the corners even if you move the camera.
+
+---
+
+## 🚀 Quick Start Guide
+
+### 1. Try it Now (User)
+1.  Open the [Live Demo Link](https://north-abyss.github.io/webar_prototype/) on your phone.
+2.  Point your camera at the **Target Image** (display it on a monitor or print it out).
+3.  Tap "Start AR" to unlock the audio.
+
+### 2. Run it Locally (Developer)
+You cannot run this by simply double-clicking `index.html`. You need a local server.
+
+**Option A: VS Code (Easiest)**
+1.  Install the "Live Server" extension.
+2.  Right-click `index.html` > **Open with Live Server**.
+
+**Option B: Python**
+```bash
+# Open terminal in project folder
+python3 -m http.server 8000
+# Go to localhost:8000
+
+```
+
+---
+
+## 🎨 Customization (Make It Yours)
+
+Want to use your own image and video?
+
+### Step 1: Compile Your Image
+
+1. Go to the [MindAR Compiler Tool](https://hiukim.github.io/mind-ar-js-doc/tools/compile).
+2. Upload your image (JPG/PNG). High contrast works best!
+3. Download the `targets.mind` file.
+4. Replace the file in `assets/targets.mind`.
+
+### Step 2: Swap the Video
+
+1. Name your video `video.mp4`.
+2. Put it in the `assets/` folder.
+3. **Important:** If your video shape is different (e.g., square vs landscape), update the `width` and `height` in `index.html`:
+```html
+<a-video src="#vid" width="1" height="0.55"></a-video>
+
+```
+
+
+
+---
 
 ## 📂 Project Structure
 
 ```text
 .
-├── index.html          # Main Application Entry Protocol
+├── index.html          # The logic (HTML + A-Frame)
 ├── css/
-│   └── style.css       # Modern Glassmorphism Stylesheet
+│   └── style.css       # The look (Glassmorphism UI)
 ├── assets/
-│   ├── targets.mind    # Compiled MindAR Image Targets
-│   └── video.mp4       # content Video Overlay
-└── README.md           # Documentation
+│   ├── targets.mind    # The brain (Compiled Image Data)
+│   └── video.mp4       # The content (Video Overlay)
+└── README.md           # You are here
+
 ```
-
-## 🚀 Quick Start
-
-### Prerequisites
-You need a simple HTTP server to run this locally because browsers block camera access on `file://` protocols.
-
-### Running Locally
-
-1.  **Clone or Download** this repository.
-2.  **Start a Server**:
-    If you have Python installed (most Macs/Linux do):
-    ```bash
-    # Run inside the project directory
-    python3 -m http.server
-    ```
-3.  **Open in Browser**:
-    Go to `http://localhost:8000` in your web browser.
-4.  **Test**: Allow camera permissions and point your camera at the target image.
-
-### Mobile Testing
-To test on your mobile device while running locally, you need to be on the same Wi-Fi network and access your computer's IP address.
-*Note: Some browsers block camera on non-secure (http) IP addresses. For best results, use USB port forwarding or deploy to a secure host.*
-
-## 🛠 Customization
-
-### Changing the Target Image
-1.  Go to the [MindAR Image Compiler](https://hiukim.github.io/mind-ar-js-doc/tools/compile).
-2.  Upload your own target image (JPG/PNG).
-3.  Download the compiled `targets.mind` file.
-4.  Replace `assets/targets.mind` with your new file.
-
-### Changing the Video
-1.  Replace `assets/video.mp4` with your desired video file.
-2.  Ensure it is optimized for web (H.264 codec recommended).
 
 ## 📱 Troubleshooting
 
-**Camera not opening?**
-- Ensure you are using `https://` or `http://localhost`. Browsers block camera access on insecure `http://` domains unless it's localhost.
-- Check browser permissions to allow camera access.
-
-**No Audio?**
-- The app attempts to unmute automatically, but some mobile browsers require a user interaction first. Tap anywhere on the screen if audio doesn't start immediately.
+| Issue | Solution |
+| --- | --- |
+| **Spinner stuck on "Loading..."** | Make sure you are using `https://` (Github Pages) or `localhost`. Camera is blocked on unsecure HTTP. |
+| **Video doesn't play** | Tap the screen once. Mobile browsers block auto-playing video with sound to save data. |
+| **Tracking is jittery** | Ensure your target image has good lighting and isn't too blurry. |
 
 ---
 
-*Built with [MindAR](https://hiukim.github.io/mind-ar-js-doc/) and [A-Frame](https://aframe.io/).*
+*Built with ❤️ by Yuvanesh KS using [MindAR](https://github.com/hiukim/mind-ar-js).*
+
+
+
