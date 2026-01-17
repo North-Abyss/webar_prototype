@@ -1,19 +1,29 @@
 
-# 🌌 WebAR Experience: "Hollow Knight" Prototype
+# 🌌 WebAR Experience: "Image to Video" Prototype
 
 ![Status](https://img.shields.io/badge/Status-Live-success) ![Tech](https://img.shields.io/badge/Tech-MindAR%20%7C%20A--Frame-blueviolet) ![License](https://img.shields.io/badge/License-MIT-lightgrey)
 
 A premium, browser-based Augmented Reality experience. This project brings static images to life by overlaying video content directly onto physical posters using **MindAR** and **A-Frame**. No app download is required—just scan and watch.
 
-[**🔴 LIVE DEMO**](https://north-abyss.github.io/webar_prototype/)
+---
 
-[👁️ View Target Image](https://github.com/North-Abyss/webar_prototype/blob/main/Gemini_Generated_Image-with-QR.png)
+## 📱 Try It Now
+**Step 1:** Open this link on your phone (or scan the QR code in the image below):
+👉 **[Launch WebAR App](https://north-abyss.github.io/webar_prototype/)**
+
+**Step 2:** Point your phone camera at the image below:
+
+<p align="center">
+  <img src="Gemini_Generated_Image-with-QR.png" alt="Target Image to Scan" width="500">
+  <br>
+  <em>(Scan this image to see the video overlay!)</em>
+</p>
 
 ---
 
 ## ✨ Features
 * **Zero-Install AR:** Runs natively in Chrome, Safari, and Firefox.
-* **Glassmorphism UI:** sleek, modern interface with frosted glass effects.
+* **Glassmorphism UI:** Sleek, modern interface with frosted glass effects.
 * **Precision Tracking:** Video locks onto the image corners instantly.
 * **Smart Audio:** Unmutes audio automatically when the target is detected.
 * **Mobile Optimized:** Solves common mobile browser blocks (autoplay/inline playback).
@@ -33,13 +43,8 @@ This project uses **Image Tracking** technology. Here is the flow from start to 
 
 ## 🚀 Quick Start Guide
 
-### 1. Try it Now (User)
-1.  Open the [Live Demo Link](https://north-abyss.github.io/webar_prototype/) on your phone.
-2.  Point your camera at the **Target Image** (display it on a monitor or print it out).
-3.  Tap "Start AR" to unlock the audio.
-
-### 2. Run it Locally (Developer)
-You cannot run this by simply double-clicking `index.html`. You need a local server.
+### 1. Run it Locally (Developer)
+You cannot run this by simply double-clicking `index.html` because browsers block camera access on local files.
 
 **Option A: VS Code (Easiest)**
 1.  Install the "Live Server" extension.
@@ -71,12 +76,11 @@ Want to use your own image and video?
 1. Name your video `video.mp4`.
 2. Put it in the `assets/` folder.
 3. **Important:** If your video shape is different (e.g., square vs landscape), update the `width` and `height` in `index.html`:
+
 ```html
-<a-video src="#vid" width="1" height="0.55"></a-video>
+<a-video src="#vid" width="1" height="0.5625"></a-video>
 
 ```
-
-
 
 ---
 
@@ -105,6 +109,3 @@ Want to use your own image and video?
 ---
 
 *Built with ❤️ by Yuvanesh KS using [MindAR](https://github.com/hiukim/mind-ar-js).*
-
-
-
