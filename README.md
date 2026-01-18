@@ -108,4 +108,4 @@ Want to use your own image and video?
 
 ---
 
-*Built with ❤️ by Yuvanesh KS using [MindAR](https://github.com/hiukim/mind-ar-js).*
+*Built with ❤️ by Yuvanesh KS  and Venkaatesh R using [MindAR](https://github.com/hiukim/mind-ar-js).*
