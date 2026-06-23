@@ -3,7 +3,7 @@
 
 ![Status](https://img.shields.io/badge/Status-Live-success) ![Tech](https://img.shields.io/badge/Tech-MindAR%20%7C%20A--Frame-blueviolet) ![License](https://img.shields.io/badge/License-MIT-lightgrey)
 
-A premium, browser-based Augmented Reality experience. This project brings static images to life by overlaying video content directly onto physical posters using **MindAR** and **A-Frame**. No app download is required—just scan and watch.
+A premium, browser-based Augmented Reality experience. This project brings static images to life by overlaying video content directly onto physical posters using **MindAR** and **A-Frame** . No app download is required—just scan and watch.
 
 ---
 
